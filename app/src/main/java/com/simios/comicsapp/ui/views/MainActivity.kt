@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val comicsViewModel: ComicsViewModel by viewModels()
-
-    private lateinit var adapter: ComicsListAdapter
     private  val comics = mutableListOf<Comic>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
