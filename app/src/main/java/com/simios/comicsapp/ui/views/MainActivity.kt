@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         comicsViewModel.loadCurrentComic()
         loadCurrentComic()
+        loadLastedComics()
         initRecyclerView()
     }
 
@@ -40,10 +41,11 @@ class MainActivity : AppCompatActivity() {
         comicsViewModel.currentComic.observe(this, Observer { response ->
             when(response) {
                 is Resource.Success -> {
-                    response.data?.let {
-                        binding.safeTitle.text = it.safeTitle
-                        Picasso.get().load(it.img).into(binding.currentComicImage)
-                        comics.add(it)
+                    response.data?.let {comic ->
+                        binding.safeTitle.text = comic.safeTitle
+                        Picasso.get().load(comic.img).into(binding.currentComicImage)
+                        comicsViewModel.loadAfterComic(comic.num)
+                        binding.currentComicImage.setOnClickListener {onItemSelected(comic)}
                     }
                 }
                 is Resource.Error -> {
@@ -55,6 +57,12 @@ class MainActivity : AppCompatActivity() {
                 is Resource.Loading -> {
                 }
             }
+        })
+    }
+
+    private fun loadLastedComics(){
+        comicsViewModel.lastedComics.observe(this, Observer { response ->
+            comics.add(response)
         })
     }
 
