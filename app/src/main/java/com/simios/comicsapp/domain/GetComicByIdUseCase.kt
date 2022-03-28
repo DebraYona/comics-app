@@ -1,10 +1,9 @@
 package com.simios.comicsapp.domain
 
 import com.simios.comicsapp.data.repository.GetComicByIdRepository
-import com.simios.comicsapp.data.repository.GetCurrentComicRepository
+import javax.inject.Inject
 
-class GetComicByIdUseCase {
-    private val repository = GetComicByIdRepository()
+class GetComicByIdUseCase @Inject constructor(private val repository: GetComicByIdRepository) {
 
     suspend operator fun invoke(ComicId: Number) = repository.getComicByIdRepository(ComicId)
 

@@ -1,17 +1,16 @@
 package com.simios.comicsapp.data.network
 
-import com.simios.comicsapp.core.RetrofitHelper
 import com.simios.comicsapp.data.model.Comic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import javax.inject.Inject
 
-class GetCurrentComicService {
-    private val retrofit = RetrofitHelper.getRetrofit()
+class GetCurrentComicService @Inject constructor(private val api: XkcdApiClient) {
 
-    suspend fun GetCurrentComicService(): Response<Comic> {
+    suspend fun getCurrentComicService(): Response<Comic> {
         return withContext(Dispatchers.IO) {
-            val response = retrofit.create(XkcdApiClient::class.java).getCurrentComic()
+            val response = api.getCurrentComic()
             response
         }
     }

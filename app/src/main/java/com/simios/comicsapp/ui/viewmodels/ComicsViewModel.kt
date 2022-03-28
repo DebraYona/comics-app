@@ -7,14 +7,18 @@ import com.simios.comicsapp.data.model.Comic
 import com.simios.comicsapp.domain.GetComicByIdUseCase
 import com.simios.comicsapp.domain.GetCurrentComicUseCase
 import com.simios.comicsapp.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import javax.inject.Inject
 
-class ComicsViewModel : ViewModel() {
+@HiltViewModel
+class ComicsViewModel @Inject constructor(
+    private val currentComicUseCase: GetCurrentComicUseCase,
+    private val comicByIdUseCase: GetComicByIdUseCase
+) : ViewModel() {
     val currentComic = MutableLiveData<Resource<Comic>>()
     val lastedComics = MutableLiveData<Comic>()
-    var currentComicUseCase = GetCurrentComicUseCase()
-    var comicByIdUseCase = GetComicByIdUseCase()
 
     fun loadCurrentComic() {
         viewModelScope.launch {
@@ -32,7 +36,6 @@ class ComicsViewModel : ViewModel() {
                         lastedComics.postValue(resultResponse)
                     }
                 }
-
             }
         }
     }
@@ -45,5 +48,4 @@ class ComicsViewModel : ViewModel() {
         }
         return Resource.Error(response.message())
     }
-
 }
