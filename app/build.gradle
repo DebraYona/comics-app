@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -55,30 +56,22 @@ dependencies {
     // OkHttp and Picasso downloader for caching images
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.jakewharton.picasso:picasso2-okhttp3-downloader:$picassoDownloaderVersion"
-    // Lifecycle AAC dependencies
-    //implementation "android.arch.lifecycle:extensions:2.1.0"
-    //implementation "android.arch.lifecycle:viewmodel:2.1.0"
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
     // Paging library
     implementation "android.arch.paging:runtime:$pagingVersion"
-    // ButterKnife Dependency
-    //implementation "com.jakewharton:butterknife:$butterknifeVersion"
-    //annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
     // Picasso Library
     implementation "com.squareup.picasso:picasso:$picassoVersion"
-    // Bottom Navigation Library Dependency
-    //implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
     //Corrutinas
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$corutinasVersion"
     // Room Library Dependencies
-    //implementation "android.arch.persistence.room:runtime:$roomVersion"
-    //annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
-
     implementation "androidx.room:room-ktx:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
