@@ -1,5 +1,6 @@
 package com.simios.comicsapp.ui.views
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                     response.data?.let {
                         binding.safeTitle.text = it.safeTitle
                         Picasso.get().load(it.img).into(binding.currentComicImage)
+                        comics.add(it)
                     }
                 }
                 is Resource.Error -> {
@@ -58,6 +60,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun  initRecyclerView() = with((binding.comicsList)){
         layoutManager = LinearLayoutManager(context)
-        adapter = ComicsListAdapter(comics)
+        adapter = ComicsListAdapter(comics) {onItemSelected(it)}
+    }
+
+    fun onItemSelected(comic :Comic){
+        Toast.makeText(this, comic.safeTitle, Toast.LENGTH_LONG).show()
+        val date = "${comic.year}-${comic.month}-${comic.day} "
+        val intent = Intent(this, DetailComicActivity::class.java).apply {
+            putExtra("title", comic.safeTitle)
+            putExtra("image", comic.img)
+            putExtra("date", date)
+        }
+        startActivity(intent)
     }
 }
