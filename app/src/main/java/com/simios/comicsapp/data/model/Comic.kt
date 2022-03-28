@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Comic(
     @SerializedName("month") val month: String,
-    @SerializedName("num") val num: Number,
+    @SerializedName("num") val num: Int,
     @SerializedName("link") val link: String,
     @SerializedName("year") val year: String,
     @SerializedName("safe_title") val safeTitle: String,
