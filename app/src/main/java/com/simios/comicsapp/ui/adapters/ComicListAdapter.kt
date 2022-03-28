@@ -3,11 +3,11 @@ package com.simios.comicsapp.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.simios.comicsapp.R
-import com.simios.comicsapp.data.model.Comic
+import com.simios.comicsapp.data.model.ComicModel
 import com.simios.comicsapp.databinding.ComicItemBinding
+import com.simios.comicsapp.domain.model.Comic
 import com.squareup.picasso.Picasso
 
 class ComicsListAdapter(
@@ -17,7 +17,6 @@ class ComicsListAdapter(
     RecyclerView.Adapter<ComicsListAdapter.ViewHolder>() {
 
     private val TAG = ComicsListAdapter::class.java.name
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -33,11 +32,11 @@ class ComicsListAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ComicItemBinding.bind(view)
 
-        fun bind(comic: Comic, onClickListener: (Comic) -> Unit) {
-            binding.comicTitle.text = comic.safeTitle
-            Picasso.get().load(comic.img).into(binding.comicImage)
+        fun bind(comicModel: Comic, onClickListener: (Comic) -> Unit) {
+            binding.comicTitle.text = comicModel.safeTitle
+            Picasso.get().load(comicModel.img).into(binding.comicImage)
             itemView.setOnClickListener {
-                onClickListener(comic)
+                onClickListener(comicModel)
             }
         }
     }

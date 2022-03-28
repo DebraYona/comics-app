@@ -13,4 +13,7 @@ interface ComicDao {
 
     @Insert
     suspend fun insertComic(comic:ComicEntity)
+
+    @Query("DELETE FROM comic_table")
+    suspend fun deleteAllComics()
 }
