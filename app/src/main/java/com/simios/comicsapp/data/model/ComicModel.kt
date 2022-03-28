@@ -2,9 +2,9 @@ package com.simios.comicsapp.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Comic(
+data class ComicModel(
     @SerializedName("month") val month: String,
-    @SerializedName("num") val num: Int,
+    @SerializedName("num") val code: Int,
     @SerializedName("link") val link: String,
     @SerializedName("year") val year: String,
     @SerializedName("safe_title") val safeTitle: String,

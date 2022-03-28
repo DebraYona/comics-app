@@ -2,17 +2,15 @@ package com.simios.comicsapp.ui.views
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.simios.comicsapp.data.model.Comic
 import com.simios.comicsapp.databinding.ActivityMainBinding
+import com.simios.comicsapp.domain.model.Comic
 import com.simios.comicsapp.ui.adapters.ComicsListAdapter
 import com.simios.comicsapp.ui.viewmodels.ComicsViewModel
-import com.simios.comicsapp.utils.Resource
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val comicsViewModel: ComicsViewModel by viewModels()
-    private val comics = mutableListOf<Comic>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,39 +29,25 @@ class MainActivity : AppCompatActivity() {
         comicsViewModel.loadCurrentComic()
         loadCurrentComic()
         loadLastedComics()
-        initRecyclerView()
     }
 
     private fun loadCurrentComic() {
-        comicsViewModel.currentComic.observe(this, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
-                    response.data?.let { comic ->
-                        binding.safeTitle.text = comic.safeTitle
-                        Picasso.get().load(comic.img).into(binding.currentComicImage)
-                        comicsViewModel.loadAfterComic(comic.num)
-                        binding.currentComicImage.setOnClickListener { onItemSelected(comic) }
-                    }
-                }
-                is Resource.Error -> {
-                    Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
-                    response.message?.let { message ->
-                        Log.e(TAG, "An error occured: $message")
-                    }
-                }
-                is Resource.Loading -> {
-                }
-            }
+        comicsViewModel.currentComic.observe(this, Observer { comic ->
+            binding.safeTitle.text = comic.safeTitle
+            Picasso.get().load(comic.img).into(binding.currentComicImage)
+            comicsViewModel.loadAfterComic(comic.code)
+            binding.currentComicImage.setOnClickListener { onItemSelected(comic) }
+
         })
     }
 
     private fun loadLastedComics() {
-        comicsViewModel.lastedComics.observe(this, Observer { response ->
-            comics.add(response)
+        comicsViewModel.lastedComics.observe(this, Observer { comics ->
+            initRecyclerView(comics)
         })
     }
 
-    private fun initRecyclerView() = with((binding.comicsList)) {
+    private fun initRecyclerView(comics: List<Comic>) = with((binding.comicsList)) {
         layoutManager = LinearLayoutManager(context)
         adapter = ComicsListAdapter(comics) { onItemSelected(it) }
     }
